@@ -1,0 +1,7 @@
+/src/.idea/
+/src/.vs/
+/src/*/bin/
+/src/*/obj/
+/src/*.user
+/.vs/
+
