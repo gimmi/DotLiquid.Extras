@@ -9,6 +9,14 @@ namespace DotLiquid.Extras
     {
         private static readonly IEqualityComparer<object> Comparer = new ValueEqualityComparer();
 
+        public static IEnumerable<object> SelectMany(object any, string key)
+        {
+            return ToEnum(any).SelectMany(
+                el => ToEnum(GetFieldVal(el, key)),
+                (parent, child) => MergeDicts(child, parent)
+            );
+        }
+
         public static IEnumerable<object> Where(object any, string key, object value)
         {
             return ToEnum(any)
@@ -82,14 +90,14 @@ namespace DotLiquid.Extras
             };
         }
 
-        private static IDictionary<string, object> MergeDicts(object outerAny, object innerAny)
+        private static IDictionary<string, object> MergeDicts(object primary, object secondary)
         {
-            var outerDict = ToDict(outerAny);
-            var innerDict = ToDict(innerAny);
+            var primaryDict = ToDict(primary);
+            var secondaryDict = ToDict(secondary);
 
             var outDict = new Hash();
-            outDict.Merge(innerDict);
-            outDict.Merge(outerDict);
+            outDict.Merge(secondaryDict);
+            outDict.Merge(primaryDict);
             return outDict;
         }
     }
