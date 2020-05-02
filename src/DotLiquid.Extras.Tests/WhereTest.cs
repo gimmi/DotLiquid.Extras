@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using static DotLiquid.Extras.Tests.TestUtils;
 
 namespace DotLiquid.Extras.Tests
 {
@@ -28,7 +29,7 @@ namespace DotLiquid.Extras.Tests
                 Rosie is a cat
             ";
 
-            TestUtils.AssertRender(data, template, expected);
+            AssertRender(data, template, expected);
         }
 
         [Test]
@@ -55,7 +56,30 @@ namespace DotLiquid.Extras.Tests
                 Rosie is 2 years old
             ";
 
-            TestUtils.AssertRender(data, template, expected);
+            AssertRender(data, template, expected);
+        }
+
+        [Test]
+        public void Can_be_combined_with_first()
+        {
+            var data = new {
+                Animals = new[] {
+                    new { Name = "Poppy", Age = 1},
+                    new { Name = "Molly", Age = 2},
+                    new { Name = "Rosie", Age = 2},
+                }
+            };
+
+            var template = @"
+                {% assign first = Animals | where:'Age',2 | first %}
+                {{ first.Name }} is the first animal 2 years old
+            ";
+
+            var expected = @"
+                Molly is the first animal 2 years old
+            ";
+
+            AssertRender(data, template, expected);
         }
     }
 }
