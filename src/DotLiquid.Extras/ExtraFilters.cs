@@ -58,14 +58,14 @@ namespace DotLiquid.Extras
             };
         }
 
-        private static IDictionary<string, object> MergeDicts(object leftAny, object rightAny)
+        private static IDictionary<string, object> MergeDicts(object outerAny, object innerAny)
         {
-            var leftDict = ToDict(leftAny);
-            var rightDict = ToDict(rightAny);
+            var outerDict = ToDict(outerAny);
+            var innerDict = ToDict(innerAny);
 
             var outDict = new Hash();
-            outDict.Merge(leftDict);
-            outDict.Merge(rightDict);
+            outDict.Merge(innerDict);
+            outDict.Merge(outerDict);
             return outDict;
         }
     }

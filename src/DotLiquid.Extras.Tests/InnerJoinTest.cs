@@ -68,5 +68,31 @@ namespace DotLiquid.Extras.Tests
 
             AssertRender(data, template, expected);
         }
+
+        [Test]
+        public void Should_keep_outer_value_if_conflict()
+        {
+            var data = new {
+                Outer = new [] {
+                    new { Id = 1, SampleField = "OUTER" },
+                },
+                Inner = new [] {
+                    new { Id = 1, SampleField = "INNER" },
+                }
+            };
+
+            var template = @"
+                {% assign joined = Outer | inner_join:Inner,'Id' -%}
+                {% for item in joined -%}
+                    Value from {{ item.SampleField }} is kept
+                {% endfor -%}
+            ";
+
+            var expected = @"
+                Value from OUTER is kept
+            ";
+
+            AssertRender(data, template, expected);
+        }
     }
 }
