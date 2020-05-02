@@ -8,7 +8,11 @@ namespace DotLiquid.Extras
 {
     public static class ExtraFilters
     {
-        public static IEnumerable<object> Where(object any, string key, object value) => ToEnum(any).Where(x => Equals(GetFieldVal(x, key), value));
+        public static IEnumerable<object> Where(object any, string key, object value)
+        {
+            var enu = ToEnum(any);
+            return enu.Where(el => Equals(GetFieldVal(el, key), value));
+        }
 
         public static IEnumerable<IDictionary<string,object>> InnerJoin(object outerAny, object innerAny, string outerKey, string innerKey = null)
         {
