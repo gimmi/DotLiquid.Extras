@@ -9,28 +9,61 @@ namespace DotLiquid.Extras.Tests
         public void Should_perform_inner_join()
         {
             var data = new {
-                Table1 = new [] {
-                    new { Id = 1, Field1 = "T1R1" },
-                    new { Id = 2, Field1 = "T1R2" },
-                    new { Id = 3, Field1 = "T1R3" },
+                Orders = new [] {
+                    new { Id = 1, UserName = "Joe" },
+                    new { Id = 2, UserName = "Jack" },
+                    new { Id = 3, UserName = "Roger" },
                 },
-                Table2 = new [] {
-                    new { Id = 2, Field2 = "T2R2" },
-                    new { Id = 3, Field2 = "T2R3" },
-                    new { Id = 4, Field2 = "T1R4" },
+                OrderItems = new [] {
+                    new { OrderId = 1, ItemDescr = "Monitor" },
+                    new { OrderId = 2, ItemDescr = "Mouse" },
+                    new { OrderId = 3, ItemDescr = "Keyboard" },
                 }
             };
 
             var template = @"
-                {% assign joined = Table1 | inner_join:Table2,'Id' -%}
+                {% assign joined = Orders | inner_join:OrderItems,'Id','OrderId' -%}
                 {% for item in joined -%}
-                    {{ item.Field1 }} | {{ item.Field2 }}
+                    {{ item.UserName }} ordered a {{ item.ItemDescr }}
                 {% endfor -%}
             ";
 
             var expected = @"
-                T1R2 | T2R2
-                T1R3 | T2R3
+                Joe ordered a Monitor
+                Jack ordered a Mouse
+                Roger ordered a Keyboard
+            ";
+
+            AssertRender(data, template, expected);
+        }
+
+        [Test]
+        public void Should_use_the_same_key()
+        {
+            var data = new {
+                Orders = new [] {
+                    new { Id = 1, UserName = "Joe" },
+                    new { Id = 2, UserName = "Jack" },
+                    new { Id = 3, UserName = "Roger" },
+                },
+                OrdersEx = new [] {
+                    new { Id = 1, DeliveryDate = "yesterday" },
+                    new { Id = 2, DeliveryDate = "today" },
+                    new { Id = 3, DeliveryDate = "tomorrow" },
+                }
+            };
+
+            var template = @"
+                {% assign joined = Orders | inner_join:OrdersEx,'Id' -%}
+                {% for item in joined -%}
+                    {{ item.UserName }} order delivered {{ item.DeliveryDate }}
+                {% endfor -%}
+            ";
+
+            var expected = @"
+                Joe order delivered yesterday
+                Jack order delivered today
+                Roger order delivered tomorrow
             ";
 
             AssertRender(data, template, expected);

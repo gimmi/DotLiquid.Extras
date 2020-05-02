@@ -10,11 +10,9 @@ namespace DotLiquid.Extras
     {
         public static IEnumerable<object> Where(object any, string key, object value) => ToEnum(any).Where(x => Equals(GetFieldVal(x, key), value));
 
-        public static IEnumerable<IDictionary<string,object>> InnerJoin(object outerAny, object innerAny, string predicate)
+        public static IEnumerable<IDictionary<string,object>> InnerJoin(object outerAny, object innerAny, string outerKey, string innerKey = null)
         {
-            var split = predicate.Split(new[]{'='}, StringSplitOptions.RemoveEmptyEntries);
-            var outerKey = split.First().Trim();
-            var innerKey = split.Last().Trim();
+            innerKey ??= outerKey;
             var outerEnum = ToEnum(outerAny);
             var innerEnum = ToEnum(innerAny);
             return outerEnum.Join(
