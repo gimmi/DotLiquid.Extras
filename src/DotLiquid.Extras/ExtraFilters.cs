@@ -2,16 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace DotLiquid.Extras
 {
     public static class ExtraFilters
     {
+        private static readonly IEqualityComparer<object> Comparer = new ValueEqualityComparer();
+
         public static IEnumerable<object> Where(object any, string key, object value)
         {
-            var enu = ToEnum(any);
-            return enu.Where(el => Equals(GetFieldVal(el, key), value));
+            return ToEnum(any)
+                .Where(el => Comparer.Equals(GetFieldVal(el, key), value));
         }
 
         public static IEnumerable<IDictionary<string,object>> InnerJoin(object outerAny, object innerAny, string outerKey, string innerKey = null)
@@ -23,8 +24,31 @@ namespace DotLiquid.Extras
                 innerEnum,
                 outer => GetFieldVal(outer, outerKey),
                 inner => GetFieldVal(inner, innerKey),
-                MergeDicts
+                MergeDicts,
+                Comparer
             );
+        }
+
+        private class ValueEqualityComparer : IEqualityComparer<object>
+        {
+            bool IEqualityComparer<object>.Equals(object left, object right)
+            {
+                // This is the same as DotLiquid.Condition.EqualVariables
+                if (left != null && right != null && left.GetType() != right.GetType())
+                {
+                    try
+                    {
+                        right = Convert.ChangeType(right, left.GetType());
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
+                return Equals(left, right);
+            }
+
+            int IEqualityComparer<object>.GetHashCode(object obj) => obj.GetHashCode();
         }
 
         private static object GetFieldVal(object any, string key)
