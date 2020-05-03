@@ -9,6 +9,13 @@ namespace DotLiquid.Extras
     {
         private static readonly IEqualityComparer<object> Comparer = new ValueEqualityComparer();
 
+        public static IEnumerable<object> Prefix(object any, string prefix)
+        {
+            return ToEnum(any)
+                .Select(ToDict)
+                .Select(x => x.ToDictionary(kvp => prefix + kvp.Key, kvp => kvp.Value));
+        }
+
         public static IEnumerable<object> ValueArray(object any, string keyName = "")
         {
             var ret = new List<object>();
