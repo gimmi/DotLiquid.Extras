@@ -47,7 +47,7 @@ namespace DotLiquid.Extras.Tests
         }
 
         [Test]
-        public void Should_keep_inner_value_if_conflict()
+        public void Should_keep_outer_value_if_conflict()
         {
             var data = new {
                 Outers = new[] {
@@ -68,7 +68,7 @@ namespace DotLiquid.Extras.Tests
             ";
 
             var expected = @"
-                MyField is InnerValue
+                MyField is OuterValue
             ";
 
             AssertRender(data, template, expected);

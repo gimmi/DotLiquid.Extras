@@ -12,8 +12,8 @@ namespace DotLiquid.Extras
         public static IEnumerable<object> SelectMany(object any, string key)
         {
             return ToEnum(any).SelectMany(
-                el => ToEnum(GetFieldVal(el, key)),
-                (parent, child) => MergeDicts(child, parent)
+                outer => ToEnum(GetFieldVal(outer, key)),
+                MergeDicts
             );
         }
 
@@ -90,14 +90,14 @@ namespace DotLiquid.Extras
             };
         }
 
-        private static IDictionary<string, object> MergeDicts(object primary, object secondary)
+        private static IDictionary<string, object> MergeDicts(object outer, object inner)
         {
-            var primaryDict = ToDict(primary);
-            var secondaryDict = ToDict(secondary);
+            var outerDict = ToDict(outer);
+            var innerDict = ToDict(inner);
 
             var outDict = new Hash();
-            outDict.Merge(secondaryDict);
-            outDict.Merge(primaryDict);
+            outDict.Merge(innerDict);
+            outDict.Merge(outerDict);
             return outDict;
         }
     }
