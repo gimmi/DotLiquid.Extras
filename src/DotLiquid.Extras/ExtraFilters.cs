@@ -9,6 +9,27 @@ namespace DotLiquid.Extras
     {
         private static readonly IEqualityComparer<object> Comparer = new ValueEqualityComparer();
 
+        public static IEnumerable<object> ValueArray(object any, string keyName = "")
+        {
+            var ret = new List<object>();
+            foreach (var kvp in ToDict(any))
+            {
+                if (string.IsNullOrWhiteSpace(keyName))
+                {
+                    ret.Add(kvp.Value);
+                    continue;
+                }
+
+                // Create new object, rather than changine existing one
+                var hash = new Hash();
+                hash.Merge(ToDict(kvp.Value));
+                hash[keyName] = kvp.Key;
+                ret.Add(hash);
+            }
+
+            return ret;
+        }
+
         public static IEnumerable<object> SelectMany(object any, string key)
         {
             return ToEnum(any).SelectMany(
