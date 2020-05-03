@@ -2,7 +2,7 @@
 
 namespace DotLiquid.Extras.Tests
 {
-    public class PrefixTest
+    public class SelectPrefixTest
     {
         [Test]
         public void Should_transform_obj_to_array_of_its_properties()
@@ -17,7 +17,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign prefixeds = Animals | prefix:'Animal_' %}
+                {% assign prefixeds = Animals | select_prefix:'Animal_' %}
                 {% for prefixed in prefixeds -%}
                     {{ prefixed.Animal_Name }} is a {{ prefixed.Animal_Type }}
                 {% endfor -%}
