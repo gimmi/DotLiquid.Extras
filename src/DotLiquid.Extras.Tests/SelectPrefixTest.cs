@@ -17,7 +17,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign prefixeds = Animals | select_prefix:'Animal_' %}
+                {% assign prefixeds = Animals | x_select_prefix:'Animal_' %}
                 {% for prefixed in prefixeds -%}
                     {{ prefixed.Animal_Name }} is a {{ prefixed.Animal_Type }}
                 {% endfor -%}

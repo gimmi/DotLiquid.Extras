@@ -3,7 +3,7 @@ using static DotLiquid.Extras.Tests.TestUtils;
 
 namespace DotLiquid.Extras.Tests
 {
-    public class InnerJoinTest
+    public class JoinTest
     {
         [Test]
         public void Should_perform_inner_join()
@@ -22,7 +22,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign joined = Orders | inner_join:OrderItems,'Id','OrderId' -%}
+                {% assign joined = Orders | x_join:OrderItems,'Id','OrderId' -%}
                 {% for item in joined -%}
                     {{ item.UserName }} ordered a {{ item.ItemDescr }}
                 {% endfor -%}
@@ -54,7 +54,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign joined = Orders | inner_join:OrdersEx,'Id' -%}
+                {% assign joined = Orders | x_join:OrdersEx,'Id' -%}
                 {% for item in joined -%}
                     {{ item.UserName }} order delivered {{ item.DeliveryDate }}
                 {% endfor -%}
@@ -82,7 +82,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign joined = Outer | inner_join:Inner,'Id' -%}
+                {% assign joined = Outer | x_join:Inner,'Id' -%}
                 {% for item in joined -%}
                     Value from {{ item.SampleField }} is kept
                 {% endfor -%}

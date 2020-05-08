@@ -30,7 +30,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign items = Orders | select_many:'OrderItems' %}
+                {% assign items = Orders | x_select_many:'OrderItems' %}
                 {% for item in items -%}
                     {{ item.UserName }} ordered a {{ item.ItemDescr }}
                 {% endfor -%}
@@ -61,7 +61,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign items = Outers | select_many:'Inners' %}
+                {% assign items = Outers | x_select_many:'Inners' %}
                 {% for item in items -%}
                     MyField is {{ item.MyField }}
                 {% endfor %}

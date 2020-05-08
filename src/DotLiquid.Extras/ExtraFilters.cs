@@ -9,14 +9,14 @@ namespace DotLiquid.Extras
     {
         private static readonly IEqualityComparer<object> Comparer = new ValueEqualityComparer();
 
-        public static IEnumerable<object> SelectPrefix(object any, string prefix)
+        public static IEnumerable<object> XSelectPrefix(object any, string prefix)
         {
             return ToEnum(any)
                 .Select(ToDict)
                 .Select(x => x.ToDictionary(kvp => prefix + kvp.Key, kvp => kvp.Value));
         }
 
-        public static IEnumerable<object> ValueArray(object any, string keyName = null)
+        public static IEnumerable<object> XValueArray(object any, string keyName = null)
         {
             var dict = ToDict(any);
             if (string.IsNullOrWhiteSpace(keyName))
@@ -33,7 +33,7 @@ namespace DotLiquid.Extras
             });
         }
 
-        public static IEnumerable<object> SelectMany(object any, string key)
+        public static IEnumerable<object> XSelectMany(object any, string key)
         {
             return ToEnum(any).SelectMany(
                 outer => ToEnum(GetFieldVal(outer, key)),
@@ -41,13 +41,13 @@ namespace DotLiquid.Extras
             );
         }
 
-        public static IEnumerable<object> Where(object any, string key, object value)
+        public static IEnumerable<object> XWhere(object any, string key, object value)
         {
             return ToEnum(any)
                 .Where(el => Comparer.Equals(GetFieldVal(el, key), value));
         }
 
-        public static IEnumerable<IDictionary<string,object>> InnerJoin(object outerAny, object innerAny, string outerKey, string innerKey = null)
+        public static IEnumerable<IDictionary<string,object>> XJoin(object outerAny, object innerAny, string outerKey, string innerKey = null)
         {
             innerKey ??= outerKey;
             var outerEnum = ToEnum(outerAny);

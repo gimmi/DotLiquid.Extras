@@ -18,7 +18,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign filtered = Animals | where:'Type','cat' -%}
+                {% assign filtered = Animals | x_where:'Type','cat' -%}
                 {% for item in filtered -%}
                     {{ item.Name }} is a cat
                 {% endfor -%}
@@ -45,7 +45,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign filtered = Animals | where:'Age',2 -%}
+                {% assign filtered = Animals | x_where:'Age',2 -%}
                 {% for item in filtered -%}
                     {{ item.Name }} is 2 years old
                 {% endfor -%}
@@ -71,7 +71,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign first = Animals | where:'Age',2 | first %}
+                {% assign first = Animals | x_where:'Age',2 | first %}
                 {{ first.Name }} is the first animal 2 years old
             ";
 

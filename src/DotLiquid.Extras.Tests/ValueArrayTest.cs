@@ -17,7 +17,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign animal_ary = Animals | value_array:'Name' %}
+                {% assign animal_ary = Animals | x_value_array:'Name' %}
                 {% for animal in animal_ary -%}
                     {{ animal.Name }} is a {{ animal.Type }}
                 {% endfor -%}
@@ -46,7 +46,7 @@ namespace DotLiquid.Extras.Tests
             };
 
             var template = @"
-                {% assign animal_ary = Animals | value_array %}
+                {% assign animal_ary = Animals | x_value_array %}
                 {% for animal in animal_ary -%}
                     There is a {{ animal.Type }}
                 {% endfor -%}
